@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Huthaifa Foudeh | Mechanical engineer, mobile robots</title>
+<meta name="description" content="Huthaifa Foudeh designs and builds mobile robots: chassis, drivetrain, wiring and ROS 2. Final-year mechanical engineering student at JUST, based in Jeddah, Saudi Arabia.">
+<meta property="og:title" content="Huthaifa Foudeh | Mechanical engineer, mobile robots">
+<meta property="og:description" content="Mobile robots from CAD to ROS 2. Projects, build logs and contact.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://huthaifa-foudeh.github.io/">
+<meta property="og:image" content="https://huthaifa-foudeh.github.io/images/apl-paired-motors.jpg">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Condensed:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F2F4F3;      /* drafting film */
+    --ink: #1E2326;        /* graphite ink */
+    --graphite: #59636A;   /* secondary text */
+    --grid: #9AA3A8;       /* title-block lines */
+    --rule: #C6CDD0;       /* hairlines */
+    --layout-blue: #2A3F9E;/* machinist's layout fluid */
+    --panel: #E4E8E8;      /* image backing */
+    --cond: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+    --body: "Barlow", "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: #DCE1E1;
+    color: var(--ink);
+    font: 400 1.0625rem/1.55 var(--body);
+  }
+  a { color: var(--layout-blue); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { text-decoration-thickness: 2px; }
+  a:focus-visible { outline: 2px solid var(--layout-blue); outline-offset: 3px; border-radius: 1px; }
+  img { display: block; max-width: 100%; height: auto; }
+
+  /* The page is one drawing sheet: trimmed edge, frame, zone markers */
+  .sheet {
+    position: relative;
+    max-width: 1180px;
+    margin: 28px auto;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    outline: 1px solid var(--grid);
+    outline-offset: 7px;
+  }
+  .zones-x {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    height: 24px;
+    margin-left: 24px;
+    border-bottom: 1px solid var(--grid);
+  }
+  .zones-y {
+    position: absolute;
+    top: 0; bottom: 0; left: 0;
+    width: 24px;
+    display: grid;
+    grid-template-rows: 24px repeat(4, 1fr);
+    border-right: 1px solid var(--grid);
+  }
+  .zones-x span, .zones-y span {
+    display: grid;
+    place-items: center;
+    font: 500 0.8rem/1 var(--cond);
+    color: var(--graphite);
+  }
+  .zones-x span + span { border-left: 1px solid var(--grid); }
+  .zones-y span + span { border-top: 1px solid var(--grid); }
+  .zones-y span:first-child { border-bottom: 1px solid var(--grid); }
+
+  .content { padding: 52px 60px 0 84px; }
+
+  /* Hero: name, statement, title block */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(330px, 0.8fr);
+    gap: 56px;
+    align-items: end;
+    padding-bottom: 56px;
+  }
+  h1 {
+    margin: 0 0 22px;
+    font: 600 clamp(3.1rem, 8.4vw, 5.8rem)/0.92 var(--cond);
+    letter-spacing: -0.005em;
+  }
+  .lede {
+    margin: 0 0 16px;
+    max-width: 30ch;
+    font-size: 1.4rem;
+    line-height: 1.35;
+    font-weight: 500;
+  }
+  .hero p { max-width: 58ch; }
+  .hero-text p:last-child { margin-bottom: 0; color: var(--graphite); }
+
+  .title-block {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+  }
+  .title-block div {
+    padding: 8px 12px 10px;
+    border-bottom: 1px solid var(--grid);
+    min-width: 0;
+  }
+  .title-block .l { border-right: 1px solid var(--grid); }
+  .title-block .wide { grid-column: 1 / -1; }
+  .title-block div:last-child { border-bottom: 0; }
+  .title-block dt { font-size: 0.75rem; color: var(--graphite); margin-bottom: 2px; }
+  .title-block dd { margin: 0; font-size: 0.98rem; line-height: 1.35; overflow-wrap: anywhere; }
+
+  /* Sections */
+  section { border-top: 1.5px solid var(--ink); padding-top: 26px; margin-bottom: 30px; }
+  h2 {
+    margin: 0 0 6px;
+    font: 600 2.1rem/1.1 var(--cond);
+  }
+  .section-note { margin: 0 0 8px; color: var(--graphite); max-width: 64ch; }
+
+  .entry {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 36px;
+    padding: 30px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .entry:last-child { border-bottom: 0; }
+  .entry.text-only { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .entry.text-only .entry-text { grid-column: 2; }
+  .entry figure { margin: 0; }
+  .entry figure img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+  }
+  h3 { margin: 0 0 4px; font: 600 1.55rem/1.15 var(--cond); }
+  .meta { margin: 0 0 14px; color: var(--graphite); font-size: 0.95rem; }
+  .entry p { margin: 0 0 12px; max-width: 64ch; }
+  .entry ul { margin: 0 0 14px; padding-left: 1.1em; max-width: 64ch; }
+  .entry li { margin-bottom: 6px; }
+  .entry li::marker { color: var(--graphite); }
+  .entry .more { margin: 0; }
+
+  .skills { margin: 18px 0 8px; display: grid; grid-template-columns: minmax(180px, 3fr) minmax(0, 9fr); }
+  .skills dt, .skills dd { padding: 12px 0; border-bottom: 1px solid var(--rule); margin: 0; }
+  .skills dt { font-weight: 600; padding-right: 24px; }
+  .skills dt:last-of-type, .skills dd:last-of-type { border-bottom: 0; }
+
+  .education p { margin: 14px 0 8px; max-width: 64ch; }
+
+  footer {
+    margin-top: 10px;
+    border-top: 1.5px solid var(--ink);
+    padding: 22px 60px 28px 84px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 32px;
+    align-items: baseline;
+    justify-content: space-between;
+    font-size: 0.95rem;
+  }
+  footer .links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  footer small { color: var(--graphite); font-size: 0.85rem; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 36px; }
+    .title-block { max-width: 560px; }
+  }
+  @media (max-width: 760px) {
+    body { background: var(--paper); }
+    .sheet { margin: 10px; outline-offset: 4px; }
+    .zones-x, .zones-y { display: none; }
+    .content { padding: 30px 20px 0; }
+    footer { padding: 20px; }
+    .lede { font-size: 1.25rem; }
+    .entry, .entry.text-only { grid-template-columns: 1fr; gap: 18px; }
+    .entry.text-only .entry-text { grid-column: auto; }
+    .skills { grid-template-columns: 1fr; }
+    .skills dt { border-bottom: 0; padding-bottom: 2px; }
+    .skills dd { padding-top: 0; }
+    .title-block { grid-template-columns: 1fr; }
+    .title-block .l { border-right: 0; }
+  }
+  @media print {
+    body { background: #fff; }
+    .sheet { margin: 0; outline: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="zones-x" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span></div>
+  <div class="zones-y" aria-hidden="true"><span></span><span>1</span><span>2</span><span>3</span><span>4</span></div>
+
+  <div class="content">
+    <header class="hero">
+      <div class="hero-text">
+        <h1>Huthaifa Foudeh</h1>
+        <p class="lede">I design and build mobile robots: the chassis, the drivetrain, the wiring and the ROS&nbsp;2 software that drives them.</p>
+        <p>Final-year mechanical engineering student at Jordan University of Science and Technology, specialising in mechatronics and control. Looking for hands-on work in robotics, autonomous systems or R&amp;D.</p>
+      </div>
+
+      <dl class="title-block" aria-label="Details">
+        <div class="l"><dt>Based in</dt><dd>Jeddah, Saudi Arabia</dd></div>
+        <div><dt>Open to</dt><dd>Roles anywhere in Saudi Arabia</dd></div>
+        <div class="l"><dt>Graduating</dt><dd>February 2027</dd></div>
+        <div><dt>Degree</dt><dd>B.Sc. Mechanical Engineering</dd></div>
+        <div class="wide"><dt>Available</dt><dd>Full-time from March 2027. Part-time or remote before then.</dd></div>
+        <div class="wide"><dt>Email</dt><dd><a href="mailto:huthaifa.foudeh@gmail.com">huthaifa.foudeh@gmail.com</a></dd></div>
+        <div class="l"><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/huthaifa-foudeh/">in/huthaifa-foudeh</a></dd></div>
+        <div><dt>GitHub</dt><dd><a href="https://github.com/huthaifa-foudeh">huthaifa-foudeh</a></dd></div>
+        <div class="wide"><dt>Revision</dt><dd>November 2026</dd></div>
+      </dl>
+    </header>
+
+    <main>
+      <section id="work" aria-labelledby="work-h">
+        <h2 id="work-h">Work</h2>
+        <article class="entry">
+          <figure>
+            <img src="images/apl-paired-motors.jpg" width="960" height="720" alt="Hoverboard hub motors paired back to back on the bench, with controllers and wiring for the tracked platform">
+          </figure>
+          <div class="entry-text">
+            <h3>Autonomous Platforms Lab (APL), JUST</h3>
+            <p class="meta">Robotics developer and mechanical designer, 2023. Supervisor: Dr. Yahia M. Al-Smadi.</p>
+            <p>Sole engineer on a four-corner tracked ground platform for a 350&nbsp;kg payload, inside a ten-member lab.</p>
+            <ul>
+              <li>Drivetrain from BLDC hub motors salvaged from hoverboards, paired back to back at each corner to double the drive torque.</li>
+              <li>Custom sprockets designed and CNC-machined to carry rubber tracks between the paired wheels.</li>
+              <li>Chassis modelled in SolidWorks, 17 parts, around standard steel tube so it only needs cutting and welding.</li>
+              <li>Wiring harness built by hand. Joystick differential mixing on an Arduino, proven on a four-LED test rig before the drivetrain was powered.</li>
+              <li>Exhibited at AIDTSEC 2023. The project stopped when external funding ended, with drivetrain, wiring and control complete.</li>
+            </ul>
+            <p class="more"><a href="https://github.com/huthaifa-foudeh/apl-tracked-platform">Build log and CAD on GitHub</a></p>
+          </div>
+        </article>
+      </section>
+
+      <section id="projects" aria-labelledby="projects-h">
+        <h2 id="projects-h">Projects</h2>
+
+        <article class="entry">
+          <figure>
+            <img src="images/rover-simulation.jpg" width="960" height="720" loading="lazy" alt="The rover model in a Gazebo Harmonic world">
+          </figure>
+          <div class="entry-text">
+            <h3>Autonomous four-wheeled vehicle</h3>
+            <p class="meta">Graduation project, 2026 to now, team of four. ROS 2 Jazzy, Gazebo Harmonic, PyTorch.</p>
+            <p>A three-layer system: the physical platform, a reinforcement learning control layer and an LLM-based operator interface. I set up the simulation (robot model, TF tree, RViz2) and a YAML-configured <code>ros_gz_bridge</code> for <code>/cmd_vel</code>, tested by teleoperation. Now building the RL control layer: observation and action spaces, reward shaping and PPO.</p>
+            <p class="more"><a href="https://github.com/huthaifa-foudeh/rover-ws">Workspace on GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="entry text-only">
+          <div class="entry-text">
+            <h3>Gazebo Harmonic start-up freeze</h3>
+            <p class="meta">2026. Ubuntu 24.04, gz-transport, systemd.</p>
+            <p>Gazebo froze on start-up and every symptom pointed at the GPU. The transport log showed the real cause: UDP multicast discovery failing on the loopback interface. I fixed it, automated the fix as a systemd unit and wrote it up, because the problem is common and the documentation is not.</p>
+            <p class="more"><a href="https://github.com/huthaifa-foudeh/gazebo-gz-transport-fix">Write-up on GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <figure>
+            <img src="images/cressida-prints.jpg" width="960" height="720" loading="lazy" alt="Printed grey PETG bearings next to the broken original part and the aiming screw with its ball">
+          </figure>
+          <div class="entry-text">
+            <h3>Toyota Cressida headlamp bearing</h3>
+            <p class="meta">2026, design job for a customer. OpenSCAD, PETG.</p>
+            <p>A replacement for the plastic ball socket of the headlamp aiming screw on the 1985&ndash;88 Cressida, rebuilt from caliper measurements of a broken original. The ball snaps in from the fork tip and lips keep it from coming out. Standard M6 hardware fits after printing, and nothing needs supports. Printed and tested.</p>
+            <p class="more"><a href="https://github.com/huthaifa-foudeh/toyota-cressida-headlamp-bearing">Source and STL on GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <figure>
+            <img src="images/odroid-exploded.jpg" width="960" height="720" loading="lazy" alt="Exploded render of the ODROID-M1 case: lid with fan opening, board with heatsink, base with drive bay">
+          </figure>
+          <div class="entry-text">
+            <h3>ODROID-M1 NAS case</h3>
+            <p class="meta">2026. OpenSCAD.</p>
+            <p>An enclosure for the ODROID-M1 single-board computer that also holds a 2.5-inch drive and a 60&nbsp;mm fan. The board rests on posts under its own heatsink with no screws through it, and every part prints without supports. Checked in CAD against the official dimensions; not printed yet.</p>
+            <p class="more"><a href="https://github.com/huthaifa-foudeh/odroid-m1-nas-case">Source and STL on GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <figure>
+            <img src="images/servo-printed.jpg" width="960" height="720" loading="lazy" alt="Printed purple bracket holding a hobby servo">
+          </figure>
+          <div class="entry-text">
+            <h3>Dual-support servo bracket</h3>
+            <p class="meta">2025. SolidWorks, PLA.</p>
+            <p>A four-part printed bracket that adds a second pivot opposite a hobby servo's output shaft, so the gearbox no longer carries the bending load. No fasteners: a slide-in arc holds the shaft and a wedge locks it.</p>
+            <p class="more"><a href="https://github.com/huthaifa-foudeh/servo-bracket-dual-support">CAD and notes on GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <figure>
+            <img src="images/attlog-sample.jpg" width="960" height="720" loading="lazy" alt="Excel output: one row per employee, with in, out and hours columns for each day">
+          </figure>
+          <div class="entry-text">
+            <h3>attlog-to-excel</h3>
+            <p class="meta">2026. Python, pandas, openpyxl.</p>
+            <p>Turns the raw log from a fingerprint attendance reader into one Excel sheet: a row per employee, in, out and hours for every day, and a weekly total. Written to work out hours for a small factory's payroll.</p>
+            <p class="more"><a href="https://github.com/huthaifa-foudeh/attlog-to-excel">Code on GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <figure>
+            <img src="images/logic-circuit.jpg" width="960" height="720" loading="lazy" alt="The vending machine logic circuit on a breadboard during testing">
+          </figure>
+          <div class="entry-text">
+            <h3>Vending machine logic controller</h3>
+            <p class="meta">Course project (ME 320), 2023 to 2024, team of three.</p>
+            <p>K-map minimisation of a three-input, three-output controller, then five ways to build it, costed against local IC prices. The cheapest came to 1.85&nbsp;JD against 3.50&nbsp;JD for the most expensive, for identical logic. Built and tested on a breadboard across all eight input states.</p>
+            <p class="more"><a href="https://github.com/huthaifa-foudeh/digital-logic-cost-optimization">Report on GitHub</a></p>
+          </div>
+        </article>
+      </section>
+
+      <section id="skills" aria-labelledby="skills-h">
+        <h2 id="skills-h">Skills</h2>
+        <dl class="skills">
+          <dt>Robotics and simulation</dt>
+          <dd>ROS 2 Jazzy, Gazebo Harmonic, ros_gz_bridge, URDF and SDF, RViz2, TF2, robot bring-up and teleoperation</dd>
+          <dt>Programming</dt>
+          <dd>Python, C++, PyTorch, reinforcement learning, Git</dd>
+          <dt>Embedded and electronics</dt>
+          <dd>ESP32, Arduino, Raspberry Pi, BLDC and DC motor control, wiring harnesses and soldering, digital logic</dd>
+          <dt>Mechanical design</dt>
+          <dd>SolidWorks, OpenSCAD, CNC-machined parts, drivetrain and machine design, FDM printing in PLA and PETG</dd>
+          <dt>Environment</dt>
+          <dd>Ubuntu 24.04, Bash, VS Code, PlatformIO</dd>
+        </dl>
+      </section>
+
+      <section id="education" class="education" aria-labelledby="education-h">
+        <h2 id="education-h">Education</h2>
+        <p><strong>B.Sc. Mechanical Engineering</strong>, Jordan University of Science and Technology. Expected February 2027.</p>
+        <p class="section-note">Coursework includes control systems, mechatronics, machine design, and electronics and digital logic.</p>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <div class="links">
+      <a href="mailto:huthaifa.foudeh@gmail.com">huthaifa.foudeh@gmail.com</a>
+      <a href="https://www.linkedin.com/in/huthaifa-foudeh/">LinkedIn</a>
+      <a href="https://github.com/huthaifa-foudeh">GitHub</a>
+    </div>
+    <small>Huthaifa Foudeh, 2026</small>
+  </footer>
+</div>
+</body>
+</html>
